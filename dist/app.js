@@ -6,6 +6,16 @@ const mediaQuery = matchMedia('(prefers-reduced-motion: reduce)');
 let paused = mediaQuery.matches;
 let selectedFlavor = 0;
 let toastTimeout;
+let sceneAvailable = null;
+
+function describeScene() {
+  const name = flavors[selectedFlavor].name;
+  $('#product-stage').setAttribute('aria-label', sceneAvailable === false ? `ZEST, ${name}. Изображение продукта.` : `3D-модель ZEST, ${name}`);
+  $('#product-stage').toggleAttribute('tabindex', sceneAvailable !== false);
+  if (sceneAvailable !== false) $('#product-stage').tabIndex = 0;
+  $('#rotation-help').hidden = sceneAvailable === false;
+}
+window.addEventListener('zest:scene', event => { sceneAvailable = event.detail.available; describeScene(); });
 
 function applyMotion() {
   document.body.classList.toggle('motion-paused', paused);
@@ -26,9 +36,9 @@ $$('[data-flavor]').forEach(button => button.addEventListener('click', () => {
   document.querySelector('meta[name="theme-color"]').content = flavor.background;
   $('#active-flavor').textContent = flavor.name;
   $('#flavor-number').textContent = `0${selectedFlavor + 1} / 03`;
-  $('#product-stage').setAttribute('aria-label', `3D-модель ZEST, ${flavor.name}`);
+  describeScene();
   $('.can-fallback').alt = `Банка ZEST ${flavor.name}`;
-  $('.can-fallback').style.filter = ['', 'hue-rotate(300deg) saturate(.65)', 'hue-rotate(40deg) saturate(.5)'][selectedFlavor];
+  $('.can-fallback').src = flavor.image;
   $$('[data-flavor]').forEach(item => {
     const active = item === button;
     item.setAttribute('aria-pressed', String(active));
@@ -53,7 +63,10 @@ menuButton.addEventListener('click', () => {
   menuButton.setAttribute('aria-label', open ? 'Закрыть меню' : 'Открыть меню');
 });
 $$('.mobile-nav a').forEach(link => link.addEventListener('click', closeMenu));
-document.addEventListener('keydown', event => { if (event.key === 'Escape') closeMenu(); });
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && !mobileNav.hidden) { closeMenu(); menuButton.focus(); }
+});
+matchMedia('(min-width: 761px)').addEventListener('change', event => { if (event.matches) closeMenu(); });
 
 if ('IntersectionObserver' in window) {
   const reveals = new IntersectionObserver(entries => {
@@ -78,6 +91,7 @@ const quantities = restoreMix();
 let previousFocus;
 const money = value => `${new Intl.NumberFormat('ru-RU').format(value)} ₽`;
 const totalCount = () => quantities.reduce((total, quantity) => total + quantity, 0);
+$('#mix-tray').innerHTML = Array.from({ length: MIX_SIZE }, (_, index) => `<li class="mix-slot"><span class="slot-empty"><span aria-hidden="true">+</span><span class="sr-only">Свободное место </span>${String(index + 1).padStart(2, '0')}</span><img width="600" height="720" alt="" hidden></li>`).join('');
 $('#mix-items').innerHTML = flavors.map((flavor, index) => `
   <div class="mix-item">
     <span class="mix-dot" style="background:${flavor.color}" aria-hidden="true"></span>
@@ -98,18 +112,35 @@ function updateMix() {
   $('#mix-count').textContent = `${count} из ${MIX_SIZE} банок`;
   $('#mix-total').textContent = money(count * CAN_PRICE);
   const colors = flavors.flatMap((flavor, index) => Array(quantities[index]).fill(flavor.color));
-  $$('.mix-progress span').forEach((bar, index) => { bar.style.background = colors[index] || ''; });
+  const cans = flavors.flatMap((flavor, index) => Array(quantities[index]).fill(flavor));
+  $$('.mix-slot').forEach((slot, index) => {
+    const flavor = cans[index];
+    const image = slot.querySelector('img');
+    slot.classList.toggle('is-filled', Boolean(flavor));
+    slot.querySelector('.slot-empty').hidden = Boolean(flavor);
+    image.hidden = !flavor;
+    if (flavor) { if (image.getAttribute('src') !== flavor.image) image.src = flavor.image; image.alt = flavor.name; }
+    else image.alt = '';
+  });
+  $('#mix-hint').textContent = count === 0 ? 'Начни с любимого вкуса. Здесь появится твой микс.' : count === MIX_SIZE ? 'Твой микс готов. Можно сохранить и забрать лето с собой.' : `Уже ${count} из ${MIX_SIZE}. Ещё немного — и твоё маленькое лето собрано.`;
   $$('.dock-dots i').forEach((bar, index) => { bar.style.background = colors[index] || ''; });
   $('#mix-dock').hidden = count === 0;
   document.body.classList.toggle('has-mix', count > 0);
   $('#dock-count').textContent = `${count} / ${MIX_SIZE}`;
   $('#dock-price').textContent = money(count * CAN_PRICE);
+  $('#dock-label').textContent = count === MIX_SIZE ? 'МИКС СОБРАН ✓' : 'ТВОЙ МИКС';
+  $('#mix-dock').classList.toggle('is-complete', count === MIX_SIZE);
   $('#clear-mix').disabled = count === 0;
-  $$('[data-add]').forEach((button, index) => {
-    button.textContent = quantities[index] ? String(quantities[index]) : '+';
+  $$('[data-add]').forEach(button => {
+    const index = Number(button.dataset.add);
+    button.querySelector('.add-label').textContent = count === MIX_SIZE ? 'Изменить' : 'В набор';
+    button.querySelector('.add-icon').textContent = count === MIX_SIZE ? '↗' : '+';
     button.classList.toggle('has-items', quantities[index] > 0);
     const noun = ['Юдзу и лимон', 'Розовый грейпфрут', 'Лайм и мяту'][index];
-    button.setAttribute('aria-label', `Добавить ${noun} в набор${quantities[index] ? `. В наборе: ${quantities[index]}` : ''}`);
+    button.setAttribute('aria-label', count === MIX_SIZE ? `Изменить набор: ${flavors[index].name}` : `Добавить ${noun} в набор${quantities[index] ? `. В наборе: ${quantities[index]}` : ''}`);
+    const badge = $(`[data-selected="${index}"]`);
+    badge.hidden = quantities[index] === 0;
+    badge.textContent = `В наборе: ${quantities[index]}`;
   });
   try { localStorage.setItem(STORAGE_KEY, JSON.stringify(quantities)); } catch { /* Core UI remains usable without storage. */ }
   const remaining = MIX_SIZE - count;
@@ -119,17 +150,21 @@ function updateMix() {
 }
 $('#balanced-mix').addEventListener('click', () => { quantities.fill(2); updateMix(); });
 $('#clear-mix').addEventListener('click', () => { quantities.fill(0); updateMix(); });
-function openMix() {
+function openMix(event) {
+  if (dialog.open) return;
   closeMenu();
   previousFocus = document.activeElement;
+  if (event?.currentTarget?.dataset.mixPreset === 'balanced') quantities.fill(2);
   updateMix();
   dialog.showModal();
   document.body.classList.add('dialog-open');
+  window.dispatchEvent(new CustomEvent('zest:dialog', { detail: { open: true } }));
 }
 $$('[data-open-mix]').forEach(button => button.addEventListener('click', openMix));
 $('#close-dialog').addEventListener('click', () => dialog.close());
 dialog.addEventListener('close', () => {
   document.body.classList.remove('dialog-open');
+  window.dispatchEvent(new CustomEvent('zest:dialog', { detail: { open: false } }));
   const focusTarget = previousFocus?.closest('[hidden]') ? $('.header [data-open-mix]') : previousFocus;
   focusTarget?.focus({ preventScroll: true });
 });
@@ -156,8 +191,7 @@ $$('[data-add]').forEach(button => button.addEventListener('click', () => {
   if (totalCount() >= MIX_SIZE) { openMix(); return; }
   quantities[index] += 1;
   updateMix();
-  toast(`${flavors[index].name} в наборе · ${totalCount()} / ${MIX_SIZE}`);
-  if (totalCount() === MIX_SIZE) openMix();
+  toast(totalCount() === MIX_SIZE ? 'Микс собран! Открой «Мой набор», чтобы сохранить.' : `${flavors[index].name} в наборе · ${totalCount()} / ${MIX_SIZE}`);
 }));
 $('#save-mix').addEventListener('click', () => {
   if (totalCount() !== MIX_SIZE) return;
@@ -172,8 +206,7 @@ $('#save-mix').addEventListener('click', () => {
 updateMix();
 
 // Keep the full landing page usable if WebGL is unavailable.
-import('./scene.js').then(({ initScene }) => initScene({ getState: () => ({ paused, selectedFlavor }) })).catch(() => {
-  $('#product-stage').setAttribute('aria-label', 'Банка ZEST. На этом устройстве показана фотография продукта.');
-  $('#product-stage').removeAttribute('tabindex');
-  $('#rotation-help').hidden = true;
+import('./scene.js').then(({ initScene }) => initScene({ getState: () => ({ paused, selectedFlavor, dialogOpen: dialog.open }) })).catch(() => {
+  sceneAvailable = false;
+  describeScene();
 });

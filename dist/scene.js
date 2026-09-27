@@ -104,19 +104,12 @@ export async function initScene(initial) {
   const fillLight = new THREE.DirectionalLight(0xffffff,1);fillLight.position.set(4,1,-3);scene.add(fillLight);
   const textures = flavors.map(flavor => labelTexture(flavor,renderer));
   const can = createCan(textures);scene.add(can.group);
-  // Render collection stills once from the same real model: no extra WebGL contexts.
-  renderer.setSize(600,720,false);renderer.setPixelRatio(1);
-  camera.aspect=600/720;camera.position.z=6.4;camera.updateProjectionMatrix();
-  can.group.rotation.set(.22,-.12,-.15);
-  flavors.forEach((flavor,index) => {
-    can.setFlavor(index);renderer.render(scene,camera);
-    const image = document.querySelector(`[data-product-image="${index}"]`);
-    image.src=renderer.domElement.toDataURL('image/png');image.classList.remove('fallback-pink','fallback-green');
-  });
+  // Collection images are pre-rendered assets; startup only prepares the live hero.
   const state = initial.getState();
   can.setFlavor(state.selectedFlavor);
   renderer.setPixelRatio(Math.min(devicePixelRatio,1.7));camera.position.z=7.1;
   stage.append(renderer.domElement);stage.classList.add('webgl-ready');
+  window.dispatchEvent(new CustomEvent('zest:scene', { detail: { available: true } }));
   const bubbleGroup = new THREE.Group();scene.add(bubbleGroup);
   const bubbleMaterial = new THREE.MeshPhysicalMaterial({color:'#effcc8',metalness:.05,roughness:.08,transparent:true,opacity:.34,clearcoat:1});
   for(let i=0;i<9;i++) {
@@ -124,7 +117,7 @@ export async function initScene(initial) {
     bubble.position.set(Math.sin(i*4)*1.5,(i/8-.5)*3.8,Math.cos(i*3)*.8-.8);
     bubble.userData.baseY=bubble.position.y;bubbleGroup.add(bubble);
   }
-  let paused=state.paused,visible=true,contextLost=false,raf=0,lastTime=0,time=0;
+  let paused=state.paused,overlayOpen=state.dialogOpen,visible=true,contextLost=false,raf=0,lastTime=0,time=0;
   let pointerX=0,pointerY=0,targetX=0,targetY=0,dragging=false,lastX=0;
   let dragRotation=0,targetRotation=0,spin=0,scrollProgress=0;
   let flavorTween=null,currentFlavor=state.selectedFlavor;
@@ -135,6 +128,7 @@ export async function initScene(initial) {
     camera.position.z=camera.aspect<.7?8:7.1;camera.updateProjectionMatrix();renderFrame();
   }
   function renderFrame() {
+    if(contextLost)return;
     const float=Math.sin(time*.9)*.07;
     can.group.position.y=float-scrollProgress*.14;
     can.group.rotation.set(.3+pointerY*.12, -.12+Math.sin(time*.5)*.14+pointerX*.2+dragRotation+spin, -.27+Math.sin(time*.7)*.035-pointerX*.035-scrollProgress*.1);
@@ -145,7 +139,7 @@ export async function initScene(initial) {
   }
   function tick(now) {
     raf=0;
-    if(document.hidden||!visible||paused||contextLost)return;
+    if(document.hidden||!visible||paused||overlayOpen||contextLost)return;
     const delta=lastTime?Math.min((now-lastTime)/1000,.05):0;lastTime=now;time+=delta;
     const damping=1-Math.exp(-delta*7);
     pointerX+=(targetX-pointerX)*damping;pointerY+=(targetY-pointerY)*damping;
@@ -159,7 +153,7 @@ export async function initScene(initial) {
     }
     renderFrame();raf=requestAnimationFrame(tick);
   }
-  function resume() { if(!raf&&!paused&&visible&&!document.hidden&&!contextLost){lastTime=0;raf=requestAnimationFrame(tick);} }
+  function resume() { if(!raf&&!paused&&!overlayOpen&&visible&&!document.hidden&&!contextLost){lastTime=0;raf=requestAnimationFrame(tick);} }
   function pauseFrame() {cancelAnimationFrame(raf);raf=0;lastTime=0;}
   window.addEventListener('zest:flavor',event=>{
     const index=event.detail.index;
@@ -173,6 +167,7 @@ export async function initScene(initial) {
     else resume();
   });
   document.addEventListener('visibilitychange',()=>{if(document.hidden)pauseFrame();else resume();});
+  window.addEventListener('zest:dialog',event=>{overlayOpen=event.detail.open;if(overlayOpen)pauseFrame();else resume();});
   stage.addEventListener('pointermove',event=>{
     const rect=stage.getBoundingClientRect();
     if(dragging) {targetRotation+=(event.clientX-lastX)*.009;lastX=event.clientX;if(paused){dragRotation=targetRotation;renderFrame();}}
@@ -190,7 +185,7 @@ export async function initScene(initial) {
   const resizeObserver = new ResizeObserver(resize);resizeObserver.observe(stage);
   const visibilityObserver = new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;if(visible)resume();else pauseFrame();},{rootMargin:'100px'});
   visibilityObserver.observe(stage);
-  renderer.domElement.addEventListener('webglcontextlost',event=>{event.preventDefault();contextLost=true;pauseFrame();stage.classList.remove('webgl-ready');renderer.domElement.style.display='none';});
-  renderer.domElement.addEventListener('webglcontextrestored',()=>{contextLost=false;renderer.domElement.style.display='';stage.classList.add('webgl-ready');renderFrame();resume();});
+  renderer.domElement.addEventListener('webglcontextlost',event=>{event.preventDefault();contextLost=true;pauseFrame();stage.classList.remove('webgl-ready');renderer.domElement.style.display='none';window.dispatchEvent(new CustomEvent('zest:scene',{detail:{available:false}}));});
+  renderer.domElement.addEventListener('webglcontextrestored',()=>{contextLost=false;renderer.domElement.style.display='';stage.classList.add('webgl-ready');window.dispatchEvent(new CustomEvent('zest:scene',{detail:{available:true}}));renderFrame();resume();});
   resize();resume();
 }

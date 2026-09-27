@@ -1402,3 +1402,134 @@ dialog h2 { font-size: 42px; font-weight: 700; letter-spacing: -.045em; }
   .mix-item-name { font-size: 12px; }
   .stepper button { width: 32px; height: 36px; }
 }
+
+/* Product guidance and a visual six-can mix. */
+.hero-offer { display: flex; align-items: center; flex-wrap: wrap; gap: 9px; margin-top: 18px; font-size: 12px; line-height: 1.6; color: #4a513d; }
+.hero-offer > span { opacity: .5; }
+.product { display: flex; flex-direction: column; }
+.product-details { display: flex; flex-direction: column; flex: 1; }
+.product-details > p { margin-bottom: 24px; }
+.product-selected { position: absolute; top: 19px; right: 18px; z-index: 3; border-radius: 100px; background: var(--ink); color: var(--paper); padding: 10px 13px; font-size: 12px; }
+.taste-profile { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; border-top: 1px solid #d6dacc; padding-top: 16px; margin: auto 0 23px; }
+.taste-profile dt { font-size: 11px; color: #65705d; line-height: 1.5; }
+.taste-profile dd { margin: 5px 0 0; font-size: 13px; line-height: 1.5; }
+.product-actions { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+.product-add { display: inline-flex; align-items: center; justify-content: space-between; gap: 20px; min-height: 46px; padding: 10px 17px; border: 1px solid #20251e65; border-radius: 100px; font-size: 14px; background: transparent; transition: background .2s, color .2s, transform .2s; }
+.add-icon { font: 22px/1 Arial, sans-serif; }
+.product-add:hover { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.product-add:active { transform: scale(.96); }
+.mix-strip { margin-top: 48px; padding-block: 30px; border-bottom: 1px solid #b0b5a9; }
+.mix-strip h3 { font-size: 29px; letter-spacing: -.04em; margin-bottom: 9px; }
+.mix-strip p { font-size: 15px; line-height: 1.6; color: #555f4d; }
+.mix-offer { display: block; font-size: 13px; margin-top: 13px; }
+.mix-offer > span { margin-inline: 9px; color: #78836c; }
+.story { align-items: start; }
+.story-image-wrap { position: sticky; top: 30px; height: 590px; min-height: 0; }
+.story-questions { margin-top: 30px; }
+.story-questions .ingredient-row { display: block; margin: 0; padding: 0; }
+.ingredient-row summary { display: flex; align-items: center; gap: 18px; min-height: 64px; padding-block: 15px; list-style: none; cursor: pointer; font-size: 15px; }
+.ingredient-row summary::-webkit-details-marker { display: none; }
+.ingredient-row summary:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; border-radius: 2px; }
+.question-number { font: 11px monospace; color: #65705d; }
+.question-icon { margin-left: auto; font: 24px/1 Arial, sans-serif; transition: transform .25s; }
+.ingredient-row[open] .question-icon { transform: rotate(45deg); }
+.question-answer { padding: 0 0 20px 33px; }
+.story-copy .question-answer p { font-size: 15px; line-height: 1.7; margin: 0; }
+.question-answer .text-button { margin-top: 8px; }
+.ingredient-row[open] .question-answer { animation: answer-in .25s var(--ease); }
+@keyframes answer-in { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: none; } }
+
+dialog { width: min(930px, calc(100% - 40px)); padding: 36px; border-radius: 24px; overscroll-behavior: contain; }
+.dialog-head { margin-bottom: 20px; }
+.dialog-head .circle-button { width: 44px; height: 44px; }
+dialog h2 { font-size: 46px; margin-bottom: 10px; }
+dialog > p { max-width: 580px; }
+.mix-layout { display: grid; grid-template-columns: .9fr 1.1fr; gap: 32px; margin-top: 26px; }
+.mix-preview { display: flex; flex-direction: column; border-radius: 16px; background: #edf0e3; padding: 25px 21px 20px; min-width: 0; }
+.mix-preview .section-index { font-size: 9px; margin-bottom: 15px; letter-spacing: .09em; text-align: center; }
+.mix-tray { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); list-style: none; gap: 4px 6px; margin: 0; padding: 0; }
+.mix-slot { position: relative; min-width: 0; aspect-ratio: .76; }
+.mix-slot:before { content: ''; position: absolute; inset: 9% 15% 7%; border: 1px dashed #a0aa90; border-radius: 10px 10px 13px 13px; transform: rotate(-8deg); transition: opacity .2s; }
+.mix-slot.is-filled:before { opacity: 0; }
+.mix-slot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.mix-slot.is-filled img { animation: can-in .4s var(--ease); }
+.slot-empty { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; font: 10px monospace; color: #728061; }
+.slot-empty > span:first-child { font: 22px Arial, sans-serif; }
+.slot-empty[hidden], .mix-slot img[hidden] { display: none; }
+.mix-hint { max-width: 245px; margin: 18px auto 22px; min-height: 40px; font-size: 13px; line-height: 1.55; text-align: center; color: #526145; }
+.preview-caption { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: auto; padding-top: 18px; border-top: 1px solid #bdc6ae; font-size: 24px; font-weight: 900; font-style: italic; letter-spacing: -2px; }
+.preview-caption > span { font: 8px monospace; letter-spacing: .02em; }
+.mix-editor { min-width: 0; }
+.mix-shortcuts { padding-top: 0; gap: 12px; }
+.mix-shortcuts .text-button { font-size: 13px; }
+.mix-items { margin-top: 8px; }
+.mix-item { gap: 10px; padding-block: 17px; }
+.mix-item-name { font-size: 14px; line-height: 1.45; }
+.stepper { gap: 5px; }
+.stepper button { width: 40px; height: 40px; }
+.mix-summary { margin-top: 22px; }
+.mix-summary strong { font-size: 30px; }
+.mix-save { margin-top: 18px; min-height: 56px; }
+.mix-editor .demo-note { font-size: 11px; line-height: 1.6; margin-top: 14px; }
+.mix-editor .save-status { font-size: 13px; line-height: 1.5; }
+.mix-dock.is-complete { border-color: #89986d; }
+.mix-dock.is-complete .dock-label { color: #3b592f; }
+@keyframes can-in { from { opacity: 0; transform: translateY(12px) rotate(-8deg) scale(.92); } to { opacity: 1; transform: none; } }
+
+@media (min-width: 761px) and (max-width: 1100px) {
+  .taste-profile { grid-template-columns: 1fr; gap: 10px; }
+  .taste-profile > div { display: flex; flex-direction: column; }
+  .taste-profile dd { margin-top: 2px; }
+  .product-actions { align-items: flex-start; flex-direction: column; }
+  .product-add { width: 100%; }
+  .story-image-wrap { height: 540px; }
+}
+@media (max-width: 760px) {
+  .hero-offer { font-size: 11px; gap: 6px; margin-top: 14px; }
+  .hero-product { margin-top: 6px; }
+  .product-details > p { margin-bottom: 20px; }
+  .taste-profile { gap: 12px; margin-bottom: 20px; }
+  .taste-profile dt { font-size: 12px; }
+  .taste-profile dd { font-size: 13px; }
+  .mix-strip { margin-top: 35px; padding-block: 26px; }
+  .mix-strip h3 { font-size: 28px; }
+  .mix-strip p { font-size: 15px; }
+  .story-image-wrap { position: relative; top: auto; height: auto; aspect-ratio: 1.1; }
+  .ingredient-row summary { gap: 14px; font-size: 14px; }
+  .question-answer { padding-left: 28px; }
+  .story-copy .question-answer p { font-size: 14px; }
+  dialog { padding: 24px; width: min(540px, calc(100% - 24px)); max-height: calc(100svh - 24px); }
+  .dialog-head { margin-bottom: 14px; }
+  .dialog-head .section-index { font-size: 9px; }
+  dialog h2 { font-size: 34px; }
+  dialog > p { font-size: 13px; }
+  .mix-layout { display: block; margin-top: 18px; }
+  .mix-preview { padding: 12px 10px; margin-bottom: 12px; }
+  .mix-preview .section-index, .preview-caption { display: none; }
+  .mix-tray { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 2px; }
+  .mix-slot { aspect-ratio: .62; }
+  .mix-slot:before { inset: 9% 8% 7%; border-radius: 7px; }
+  .slot-empty { gap: 5px; font-size: 9px; }
+  .mix-hint { font-size: 11px; min-height: 0; margin: 8px auto 0; max-width: 290px; }
+  .mix-shortcuts .text-button { font-size: 11px; }
+  .mix-item { padding-block: 13px; }
+  .mix-item-name { font-size: 13px; }
+  .mix-dot { width: 12px; height: 12px; }
+  .stepper button { width: 40px; height: 40px; }
+  .mix-summary { margin-top: 18px; }
+  .mix-summary strong { font-size: 27px; }
+  .mix-save { margin-top: 15px; font-size: 14px; }
+  .menu-toggle { width: 44px; height: 44px; }
+}
+@media (max-width: 360px) {
+  .header { gap: 9px; }
+  .header .button { padding-inline: 12px; }
+  .wordmark { font-size: 35px; }
+  dialog { padding: 19px; }
+  dialog h2 { font-size: 30px; }
+  .mix-item { gap: 6px; }
+  .mix-item-name { font-size: 12px; }
+  .mix-dot { display: none; }
+  .stepper button { width: 36px; height: 40px; }
+  .stepper { gap: 3px; }
+}
