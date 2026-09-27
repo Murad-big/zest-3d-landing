@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#e7f576">
+  <meta name="description" content="ZEST — маленькая банка, большое лето. Три ярких цитрусовых вкуса, натуральный сок и лёгкие пузырьки. Выбери свой вкус и собери набор.">
+  <title>ZEST — маленькая банка, большое лето</title>
+  <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="./assets/fonts/golos-black.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="./styles.css">
+  <script src="./app.js" type="module"></script>
+</head>
+<body>
+  <a class="skip-link" href="#flavors">Перейти к вкусам</a>
+  <main>
+  <div class="hero-shell" id="top">
+    <header class="header page-width">
+      <a class="wordmark" href="#top" aria-label="ZEST — на главную">ZEST<span>®</span></a>
+      <nav class="desktop-nav" aria-label="Основная навигация"><a href="#flavors">Вкусы</a><a href="#inside">Что внутри</a><a href="#about">О нас</a></nav>
+      <button class="button button-small" data-open-mix>Попробовать <span aria-hidden="true">↗</span></button>
+      <button class="menu-toggle circle-button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mobile-nav"><span></span><span></span></button>
+    </header>
+    <nav class="mobile-nav" id="mobile-nav" aria-label="Мобильная навигация" hidden><a href="#flavors">Вкусы</a><a href="#inside">Что внутри</a><a href="#about">О нас</a></nav>
+      <section class="hero page-width" aria-labelledby="hero-heading">
+        <div class="hero-copy">
+          <h1 id="hero-heading"><span>Маленькая</span><span>банка.</span><span>Большое лето.</span></h1>
+          <p>Натуральный цитрус. Лёгкие пузырьки.<br>Ничего лишнего — только твой новый<br class="desktop-break"> любимый вкус.</p>
+          <a href="#flavors" class="button">Выбрать свой вкус <span aria-hidden="true">↗</span></a>
+        </div>
+        <div class="hero-product">
+          <div class="orbit" aria-hidden="true"></div>
+          <div class="product-stage" id="product-stage" role="img" aria-label="Объёмная банка ZEST, вкус Юдзу и лимон. Реагирует на движение курсора.">
+            <img class="can-fallback" src="./assets/can-yuzu.png" alt="Жёлтая банка ZEST Юдзу и лимон" fetchpriority="high" width="1024" height="1536">
+          </div>
+          <div class="product-shadow" aria-hidden="true"></div>
+          <span class="scene-note">КРУТИ. ВЫБИРАЙ. ОСВЕЖАЙСЯ.</span>
+          <div class="flavor-control">
+            <div class="flavor-control-top"><h2 id="active-flavor" aria-live="polite">Юдзу & лимон</h2><span id="flavor-number">01 / 03</span></div>
+            <div class="flavor-options" role="group" aria-label="Выбери вкус">
+              <button class="swatch selected" style="--swatch:#e5f568" data-flavor="0" aria-label="Юдзу и лимон" aria-pressed="true"></button>
+              <button class="swatch" style="--swatch:#ff9689" data-flavor="1" aria-label="Розовый грейпфрут" aria-pressed="false"></button>
+              <button class="swatch" style="--swatch:#a8cf9d" data-flavor="2" aria-label="Лайм и мята" aria-pressed="false"></button>
+              <button class="motion-toggle" id="motion-toggle" aria-label="Приостановить анимацию" aria-pressed="false"><span aria-hidden="true">Ⅱ</span><span class="motion-label">Пауза</span></button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <div class="benefits page-width" aria-label="Особенности напитка">
+        <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 3C8 2 3 8 5 14s12 6 15-11Z M4 21 15 9"/></svg>Настоящий сок</span>
+        <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6m-5 0v7l-5 9a1 1 0 0 0 1 2h12a1 1 0 0 0 1-2l-5-9V3M8 15h8M3 3l18 18"/></svg>Без искусственных красителей</span>
+        <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v20M3 7l18 10M3 17 21 7M8 4l4 3 4-3M8 20l4-3 4 3"/></svg>Пить охлаждённым</span>
+      </div>
+  </div>
+      <section class="collection page-width" id="flavors" aria-labelledby="flavors-heading">
+        <div class="section-heading reveal"><div><span class="section-index">/01 — НАЙДИ СВОЙ</span><h2 id="flavors-heading">Три характера.<br>Твой — какой?</h2></div><p>Выбирай под настроение.<br>Или попробуй всё сразу.</p></div>
+        <div class="products">
+          <article class="product reveal" style="--panel:#eaf49a;--delay:0ms">
+            <div class="product-visual"><span class="volume">330 мл</span><button class="add-button circle-button" data-add="0" aria-label="Добавить Юдзу и лимон в набор">+</button><img class="product-image" data-product-image="0" src="./assets/can-yuzu.png" alt="ZEST Юдзу и лимон" width="600" height="720" loading="lazy"><span class="product-taste">ЦИТРУСОВЫЙ · ЯРКИЙ</span></div>
+            <div class="product-details"><h3>Юдзу & лимон</h3><p>Солнечный цитрус с лёгкой горчинкой.<br>Для тех, кто ищет новое.</p><span class="price">190 ₽ <span>/ банка</span></span></div>
+          </article>
+          <article class="product reveal" style="--panel:#ffc1b5;--delay:90ms">
+            <div class="product-visual"><span class="volume">330 мл</span><button class="add-button circle-button" data-add="1" aria-label="Добавить Розовый грейпфрут в набор">+</button><img class="product-image fallback-pink" data-product-image="1" src="./assets/can-yuzu.png" alt="ZEST Розовый грейпфрут" width="600" height="720" loading="lazy"><span class="product-taste">СОЧНЫЙ · ДЕРЗКИЙ</span></div>
+            <div class="product-details"><h3>Розовый грейпфрут</h3><p>Сочный, с приятной кислинкой.<br>Заряжает настроением.</p><span class="price">190 ₽ <span>/ банка</span></span></div>
+          </article>
+          <article class="product reveal" style="--panel:#d3e9c7;--delay:180ms">
+            <div class="product-visual"><span class="volume">330 мл</span><button class="add-button circle-button" data-add="2" aria-label="Добавить Лайм и мяту в набор">+</button><img class="product-image fallback-green" data-product-image="2" src="./assets/can-yuzu.png" alt="ZEST Лайм и мята" width="600" height="720" loading="lazy"><span class="product-taste">СВЕЖИЙ · ЛЁГКИЙ</span></div>
+            <div class="product-details"><h3>Лайм & мята</h3><p>Свежий цитрус и прохладная мята.<br>Для лёгкости в любом ритме.</p><span class="price">190 ₽ <span>/ банка</span></span></div>
+          </article>
+        </div>
+        <div class="mix-strip reveal"><p>Не можешь выбрать? Собери микс.</p><button class="button" data-open-mix>Собрать набор <span aria-hidden="true">↗</span></button></div>
+      </section>
+      <section class="story page-width" id="inside" aria-labelledby="story-heading">
+        <div class="story-image-wrap reveal"><img src="./assets/citrus-editorial.png" alt="Три цитрусовых вкуса ZEST, свежие лимоны и грейпфрут в солнечном свете" width="1536" height="1024" loading="lazy" class="story-image"></div>
+        <div class="story-copy reveal" id="about"><span class="section-index">/02 — ВСЁ ПРОСТО</span><h2 id="story-heading">Хорошее<br>внутри.</h2><p>Мы придумали ZEST для моментов, когда хочется выдохнуть. Открыть холодную банку. Почувствовать лето — где бы ты ни был.</p><p>Настоящий цитрусовый сок, чистый вкус и пузырьки, которые приятно щекочут нос. Вот и весь секрет.</p><div class="ingredient-row"><span>01</span><span>Натуральный сок</span><span aria-hidden="true">↗</span></div><div class="ingredient-row"><span>02</span><span>Лёгкие пузырьки</span><span aria-hidden="true">↗</span></div></div>
+      </section>
+    </main>
+    <footer class="footer">
+      <div class="page-width"><div class="footer-cta reveal"><h2>Добавь лето<br>в свои планы.</h2><button class="button button-lime" data-open-mix>Собрать свой набор <span aria-hidden="true">↗</span></button></div><div class="footer-bottom"><a href="#top" class="wordmark" aria-label="ZEST — наверх">ZEST<span>®</span></a><nav aria-label="Навигация в подвале"><a href="#flavors">Вкусы</a><a href="#inside">Что внутри</a><a href="#about">О нас</a></nav><div class="footer-legal"><span>© ZEST 2026</span><span>Концепт бренда для портфолио</span></div></div></div>
+    </footer>
+    <dialog id="mix-dialog" aria-labelledby="mix-heading" aria-describedby="mix-description">
+      <div class="dialog-head"><span class="section-index">ТВОЁ МАЛЕНЬКОЕ ЛЕТО</span><button class="circle-button" id="close-dialog" aria-label="Закрыть конструктор">×</button></div>
+      <h2 id="mix-heading">Собери свой микс.</h2><p id="mix-description">Шесть банок. Любое сочетание. Какое настроение берём с собой?</p>
+      <div class="mix-items" id="mix-items"></div>
+      <div class="mix-progress" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="mix-summary" aria-live="polite"><span id="mix-count">0 из 6 банок</span><strong id="mix-total">0 ₽</strong></div>
+      <button class="button mix-save" id="save-mix" disabled>Выбери ещё 6 банок <span aria-hidden="true">↗</span></button>
+      <p class="demo-note">Это портфолио-концепт. Можно сохранить подборку; покупка и оплата недоступны.</p>
+      <p id="save-status" class="save-status" role="status"></p>
+    </dialog>
+    <div class="toast" id="toast" role="status"></div>
+</body>
+</html>
