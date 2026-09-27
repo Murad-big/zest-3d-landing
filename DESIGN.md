@@ -3,7 +3,7 @@
 Three coordinated ImageGen references establish the hero, collection, and story/footer. Their generated UI remains a reference only; all website text and controls are live HTML.
 
 - Hero: acid yellow `#e7f576`, black `#20251e`, open split composition, giant compact headline, tilted can, fine elliptical orbit, circular flavor swatches.
-- Typography: Golos Text 900 for expressive Cyrillic headings; 400 for body. Heading scale 112 / 76 / 56 on desktop, fluid mobile reductions. UI text 14–16px; body 16–18px.
+- Typography: Roboto Condensed 900 for the narrow hero headline; Golos Text 900 for section headings and 400 for body. Hero scale up to 145px; section scale 82–104px with fluid mobile reductions. UI text 14–16px; body 16–18px.
 - Containers: open full-width sections with 48px desktop and 20px mobile gutters. Collection uses three purposeful product panels; other sections remain unboxed.
 - Components: capsule CTAs, circular plus buttons, three color selectors, fine divider rows. One accessible native dialog is an intentional extension needed to make the build-a-mix action functional.
 - Hero copy: “Маленькая банка. Большое лето.” No eyebrow or promotional badge. Navigation: Вкусы / Что внутри / О нас / Попробовать.
@@ -14,3 +14,16 @@ Three coordinated ImageGen references establish the hero, collection, and story/
 - Functional boundary: local six-can mix builder and downloadable selection; no fabricated order submission, checkout, or external recipient.
 
 Concept interpretation: omit the collection reference's spontaneously invented second navigation bar. Preserve the hero navigation once for the whole landing page. Use live code-native product labels rather than the reference's fruit illustration to keep the 3D model performant and legible.
+
+## Visual review
+
+Compared the three original concepts with desktop, full-page, and mobile browser renders:
+
+1. Hero composition: preserved the left-aligned three-line headline and oversized tilted can on the right. Replaced an initially too-wide display font with Roboto Condensed and corrected tracking.
+2. Palette: matched the acid-yellow hero, paper collection, three flavor colors, and forest-green footer. Reduced overexposure on the can material.
+3. Product: retained typography, silver rim and lid, orbit, condensation, and flavor controls. Live 3D materials intentionally replace the photoreal concept image.
+4. Collection: retained three open product panels, image proportions, plus buttons, descriptions, prices, and the mix strip.
+5. Story/footer: preserved the image-left/text-right arrangement, two ruled ingredient rows, oversized footer CTA, and simple bottom navigation.
+6. Mobile: stacked the hero and collection, reduced heading size, added a compact menu, and increased space between the can and flavor controls.
+
+The six-can dialog is a functional extension of the concept's CTA. The project remains an explicit fictional brand demo and does not simulate a successful real order.

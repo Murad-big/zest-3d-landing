@@ -8,8 +8,8 @@ function labelTexture(flavor, renderer) {
   ctx.fillStyle = flavor.color; ctx.fillRect(0, 0, canvas.width, canvas.height);
   ctx.fillStyle = '#20251e';
   // Artwork is actual printed typography on a cylindrical UV map.
-  ctx.save(); ctx.translate(1070, 630); ctx.rotate(-Math.PI / 2);
-  ctx.font = '900 390px Golos, Arial'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.save(); ctx.translate(1070, 590); ctx.rotate(-Math.PI / 2);
+  ctx.font = '900 350px Golos, Arial'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
   ctx.fillText('ZEST', 0, 0); ctx.restore();
   ctx.textAlign = 'center'; ctx.font = '900 72px Golos, Arial';
   flavor.label.split('\n').forEach((line, index) => ctx.fillText(line, 1024, 1170 + index * 76));
@@ -31,7 +31,7 @@ function createCan(textures) {
   const group = new THREE.Group();
   const aluminum = new THREE.MeshStandardMaterial({ color: '#d4d9d7', roughness: .23, metalness: .93 });
   const lidMetal = new THREE.MeshStandardMaterial({ color: '#b9c0bc', roughness: .32, metalness: .9 });
-  const label = new THREE.MeshPhysicalMaterial({ map: textures[0], roughness: .32, metalness: .2, clearcoat: .65, clearcoatRoughness: .25 });
+  const label = new THREE.MeshPhysicalMaterial({ map: textures[0], roughness: .4, metalness: .05, clearcoat: .3, clearcoatRoughness: .3 });
   const body = new THREE.Mesh(new THREE.CylinderGeometry(.68, .68, 2.95, 96, 1, true), label);
   body.rotation.y = Math.PI;
   group.add(body);
@@ -81,7 +81,7 @@ function studioEnvironment(renderer) {
   }
   panel(-3,2,4,2.8,7,5);panel(4,1,1,1,6,3);panel(0,6,0,5,5,4);panel(0,1,-5,5,5,.12);
   const pmrem = new THREE.PMREMGenerator(renderer);
-  const env = pmrem.fromScene(room,.05);pmrem.dispose();
+  const env = pmrem.fromScene(room,.02);pmrem.dispose();
   room.traverse(object => { object.geometry?.dispose();object.material?.dispose(); });
   return env;
 }
@@ -93,21 +93,21 @@ export async function initScene(initial) {
   renderer.setPixelRatio(Math.min(devicePixelRatio,1.7));
   renderer.setClearColor(0x000000,0);
   renderer.outputColorSpace=THREE.SRGBColorSpace;
-  renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.1;
+  renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=.85;
   renderer.domElement.setAttribute('aria-hidden','true');
   const scene = new THREE.Scene();
-  const environment = studioEnvironment(renderer);scene.environment = environment.texture;scene.environmentIntensity=.65;
+  const environment = studioEnvironment(renderer);scene.environment = environment.texture;scene.environmentIntensity=.35;
   const camera = new THREE.PerspectiveCamera(35,1,.1,100);
   camera.position.set(0,.25,7.1);camera.lookAt(0,0,0);
-  scene.add(new THREE.HemisphereLight(0xffffff,0x8c9d74,2.5));
-  const keyLight = new THREE.DirectionalLight(0xffffff,3.5);keyLight.position.set(-3,5,6);scene.add(keyLight);
-  const fillLight = new THREE.DirectionalLight(0xffffff,1.6);fillLight.position.set(4,1,-3);scene.add(fillLight);
+  scene.add(new THREE.HemisphereLight(0xffffff,0x8c9d74,1.7));
+  const keyLight = new THREE.DirectionalLight(0xffffff,2.3);keyLight.position.set(-3,5,6);scene.add(keyLight);
+  const fillLight = new THREE.DirectionalLight(0xffffff,.9);fillLight.position.set(4,1,-3);scene.add(fillLight);
   const textures = flavors.map(flavor => labelTexture(flavor,renderer));
   const can = createCan(textures);scene.add(can.group);
   // Render collection stills once from the same real model: no extra WebGL contexts.
   renderer.setSize(600,720,false);renderer.setPixelRatio(1);
   camera.aspect=600/720;camera.position.z=6.4;camera.updateProjectionMatrix();
-  can.group.rotation.set(.1,-.12,-.15);
+  can.group.rotation.set(.22,-.12,-.15);
   flavors.forEach((flavor,index) => {
     can.setFlavor(index);renderer.render(scene,camera);
     const image = document.querySelector(`[data-product-image="${index}"]`);
@@ -131,7 +131,7 @@ export async function initScene(initial) {
   }
   function renderFrame() {
     can.group.position.y=Math.sin(time*.9)*.075;
-    can.group.rotation.set(.09+pointerY*.1, -.12+Math.sin(time*.5)*.14+pointerX*.16+dragRotation+transitionSpin, -.2+Math.sin(time*.7)*.035-pointerX*.04);
+    can.group.rotation.set(.24+pointerY*.1, -.12+Math.sin(time*.5)*.14+pointerX*.16+dragRotation+transitionSpin, -.24+Math.sin(time*.7)*.035-pointerX*.04);
     bubbleGroup.children.forEach((bubble,index)=>{bubble.position.y=bubble.userData.baseY+Math.sin(time*.7+index)*.14;});
     renderer.render(scene,camera);
   }
