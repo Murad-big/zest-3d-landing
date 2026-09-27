@@ -49,6 +49,23 @@ Three fresh ImageGen section references guide the hero, catalog, and new moments
 - Hero: preserve all existing visible copy, type, composition and controls; add two textured 3D citrus slices that float and change fruit with the flavor. Keep the left slice below the heading's baseline so text remains unobscured. Citrus is real geometry using an ImageGen texture atlas, not a static screenshot of the concept.
 - Catalog: preserve all three products and functional controls. Add subdued outlined flavor numbers, fine elliptical orbits, subtle pointer movement and clear separation between tasting notes. Existing code-native can artwork stays consistent with the live product, rather than adopting incidental new print from ImageGen.
 - Transition: forest-green full-width marquee with acid display type, a simple sunburst and an accessible pause control. It shares the hero's motion setting and stops outside the viewport.
-- Moments: after the existing story, add `/03 — ЛОВИ МОМЕНТ`, the two-line headline `У лета нет / расписания.`, the picnic photograph without a tint, a balanced-mix CTA, and three open ritual steps. Use the original concept's copy and a 2.1:1 photo on desktop; use a centered square crop and stacked steps on mobile.
+- Moments: after the existing story, add `/03 — ЛОВИ МОМЕНТ`, the two-line headline `У лета нет / расписания.`, the picnic photograph without a tint, a balanced-mix CTA, and three open ritual steps. Use the original concept's copy and its approximately 2.5:1 media frame on desktop; use a centered square crop and stacked steps on mobile.
 
 New production assets are separate from the UI concepts. The picnic image is a full standalone photograph with corrected existing flavor labels. The alpha citrus atlas contains lemon, grapefruit and lime face textures; code supplies the 3D rind, thickness, lighting and movement. Existing purchase boundaries and accessible native dialog behavior remain intact.
+
+### Visual comparison ledger
+
+The three selected concepts and the final browser captures were opened with `view_image` in the same review pass. The hero was checked at the concept's native **1505 × 1045** viewport; catalog at **1536px** wide; moments at **1448 × 1086** with a full-section capture; mobile at **390 × 844**. Full-section captures preserve the live page's vertical spacing rather than cropping content to the reference canvas.
+
+| Point | Reference / rendered evidence | Resolution |
+| --- | --- | --- |
+| Hero copy and layout | Same brand, navigation, headline lines, description, price and action | No added, removed or renamed above-the-fold copy |
+| Citrus placement | Reference lower slice crossed the final headline; initial render's upper slice overlapped the rim | Moved lower slice below the headline and separated the upper slice from the can; intentional legibility improvement |
+| Color and materials | Acid hero, three flavor palettes, forest band, off-white content | Preserved tokens; corrected dull fruit lighting while keeping the original code-native can artwork |
+| Collection details | Outlined 01–03, elliptical orbits, notes and price/action row | Implemented with live text/CSS; strengthened note labels and price, aligned the starter strip horizontally |
+| Moments typography | Large condensed two-line heading, right-side copy/CTA | Increased heading scale and reduced the gap to the photo to match the reference's hierarchy |
+| Media treatment | Untinted wide picnic photo, all three cans visible | Separate generated production photograph with correct flavor labels; 2.5:1 desktop frame and centered mobile crop |
+| Responsive copy | Three open ritual steps, readable mobile continuation | Stacked steps; fixed missing spaces where desktop line breaks disappear |
+| Motion/accessibility | Floating fruit, responsive panels, moving band with pause | Shared pause state, offscreen suspension, dialog suspension, static reduced-motion band |
+
+Intentional deviations: live Three.js geometry replaces the reference's fixed hero render; the site's established descriptions and can labels override incidental ImageGen changes; the catalog keeps the established page's breathing room. No unresolved clipping, missing media, overlapping controls or mobile overflow was found in the reviewed views. The final implementation was visually verified against this selected design direction, alongside the interaction checks documented in README.
