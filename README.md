@@ -2,6 +2,8 @@
 
 An art-directed, animated Russian-language landing page for a fictional premium citrus soda brand. A portfolio project built with semantic HTML, modern CSS, and Three.js.
 
+[Open the live demo](https://zest-citrus-studio.richard-cabrer849537.chatgpt.site) — currently published with owner-only access.
+
 ## Development milestones
 
 - [x] Brand concept, visual direction, and original product photography
