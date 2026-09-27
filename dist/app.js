@@ -12,7 +12,7 @@ function applyMotion() {
   $('#motion-toggle').setAttribute('aria-pressed', String(paused));
   $('#motion-toggle').setAttribute('aria-label', paused ? 'Включить анимацию' : 'Приостановить анимацию');
   $('#motion-toggle > span').textContent = paused ? '▷' : 'Ⅱ';
-  $('.motion-label').textContent = paused ? 'Играть' : 'Пауза';
+  $('.motion-label').textContent = paused ? 'Продолжить' : 'Пауза';
   window.dispatchEvent(new CustomEvent('zest:motion', { detail: { paused } }));
 }
 $('#motion-toggle').addEventListener('click', () => { paused = !paused; applyMotion(); });
@@ -26,7 +26,7 @@ $$('[data-flavor]').forEach(button => button.addEventListener('click', () => {
   document.querySelector('meta[name="theme-color"]').content = flavor.background;
   $('#active-flavor').textContent = flavor.name;
   $('#flavor-number').textContent = `0${selectedFlavor + 1} / 03`;
-  $('#product-stage').setAttribute('aria-label', `Объёмная банка ZEST, вкус ${flavor.name}. Реагирует на движение курсора.`);
+  $('#product-stage').setAttribute('aria-label', `3D-модель ZEST, ${flavor.name}`);
   $('.can-fallback').alt = `Банка ZEST ${flavor.name}`;
   $('.can-fallback').style.filter = ['', 'hue-rotate(300deg) saturate(.65)', 'hue-rotate(40deg) saturate(.5)'][selectedFlavor];
   $$('[data-flavor]').forEach(item => {
@@ -35,6 +35,12 @@ $$('[data-flavor]').forEach(button => button.addEventListener('click', () => {
     item.classList.toggle('selected', active);
   });
   window.dispatchEvent(new CustomEvent('zest:flavor', { detail: { index: selectedFlavor } }));
+}));
+$$('[data-flavor]').forEach((button, index, buttons) => button.addEventListener('keydown', event => {
+  if (!['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
+  event.preventDefault();
+  const next = (index + (event.key === 'ArrowRight' ? 1 : -1) + buttons.length) % buttons.length;
+  buttons[next].focus(); buttons[next].click();
 }));
 
 const menuButton = $('.menu-toggle');
@@ -60,7 +66,15 @@ if ('IntersectionObserver' in window) {
 }
 
 const dialog = $('#mix-dialog');
-const quantities = [0, 0, 0];
+const STORAGE_KEY = 'zest.mix.v1';
+function restoreMix() {
+  try {
+    const value = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    if (Array.isArray(value) && value.length === flavors.length && value.every(n => Number.isInteger(n) && n >= 0 && n <= MIX_SIZE) && value.reduce((a, b) => a + b, 0) <= MIX_SIZE) return value;
+  } catch { /* Storage may be unavailable in a private browser session. */ }
+  return [0, 0, 0];
+}
+const quantities = restoreMix();
 let previousFocus;
 const money = value => `${new Intl.NumberFormat('ru-RU').format(value)} ₽`;
 const totalCount = () => quantities.reduce((total, quantity) => total + quantity, 0);
@@ -85,11 +99,26 @@ function updateMix() {
   $('#mix-total').textContent = money(count * CAN_PRICE);
   const colors = flavors.flatMap((flavor, index) => Array(quantities[index]).fill(flavor.color));
   $$('.mix-progress span').forEach((bar, index) => { bar.style.background = colors[index] || ''; });
+  $$('.dock-dots i').forEach((bar, index) => { bar.style.background = colors[index] || ''; });
+  $('#mix-dock').hidden = count === 0;
+  document.body.classList.toggle('has-mix', count > 0);
+  $('#dock-count').textContent = `${count} / ${MIX_SIZE}`;
+  $('#dock-price').textContent = money(count * CAN_PRICE);
+  $('#clear-mix').disabled = count === 0;
+  $$('[data-add]').forEach((button, index) => {
+    button.textContent = quantities[index] ? String(quantities[index]) : '+';
+    button.classList.toggle('has-items', quantities[index] > 0);
+    const noun = ['Юдзу и лимон', 'Розовый грейпфрут', 'Лайм и мяту'][index];
+    button.setAttribute('aria-label', `Добавить ${noun} в набор${quantities[index] ? `. В наборе: ${quantities[index]}` : ''}`);
+  });
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(quantities)); } catch { /* Core UI remains usable without storage. */ }
   const remaining = MIX_SIZE - count;
   $('#save-mix').disabled = remaining > 0;
   $('#save-mix').innerHTML = remaining ? `Выбери ещё ${remaining} ${remaining === 1 ? 'банку' : remaining < 5 ? 'банки' : 'банок'} <span aria-hidden="true">↗</span>` : 'Сохранить мой набор <span aria-hidden="true">↗</span>';
   $('#save-status').textContent = '';
 }
+$('#balanced-mix').addEventListener('click', () => { quantities.fill(2); updateMix(); });
+$('#clear-mix').addEventListener('click', () => { quantities.fill(0); updateMix(); });
 function openMix() {
   closeMenu();
   previousFocus = document.activeElement;
@@ -99,7 +128,11 @@ function openMix() {
 }
 $$('[data-open-mix]').forEach(button => button.addEventListener('click', openMix));
 $('#close-dialog').addEventListener('click', () => dialog.close());
-dialog.addEventListener('close', () => { document.body.classList.remove('dialog-open'); previousFocus?.focus(); });
+dialog.addEventListener('close', () => {
+  document.body.classList.remove('dialog-open');
+  const focusTarget = previousFocus?.closest('[hidden]') ? $('.header [data-open-mix]') : previousFocus;
+  focusTarget?.focus({ preventScroll: true });
+});
 dialog.addEventListener('click', event => {
   if (event.target !== dialog) return;
   const box = dialog.getBoundingClientRect();
@@ -139,6 +172,8 @@ $('#save-mix').addEventListener('click', () => {
 updateMix();
 
 // Keep the full landing page usable if WebGL is unavailable.
-import('./scene.js').then(({ initScene }) => initScene({ paused, selectedFlavor })).catch(() => {
+import('./scene.js').then(({ initScene }) => initScene({ getState: () => ({ paused, selectedFlavor }) })).catch(() => {
   $('#product-stage').setAttribute('aria-label', 'Банка ZEST. На этом устройстве показана фотография продукта.');
+  $('#product-stage').removeAttribute('tabindex');
+  $('#rotation-help').hidden = true;
 });

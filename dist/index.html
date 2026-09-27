@@ -8,6 +8,7 @@
   <title>ZEST — маленькая банка, большое лето</title>
   <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
   <link rel="preload" href="./assets/fonts/golos-black.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="./assets/fonts/roboto-condensed-black.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="stylesheet" href="./styles.css">
   <script src="./app.js" type="module"></script>
 </head>
@@ -30,11 +31,11 @@
         </div>
         <div class="hero-product">
           <div class="orbit" aria-hidden="true"></div>
-          <div class="product-stage" id="product-stage" role="img" aria-label="Объёмная банка ZEST, вкус Юдзу и лимон. Реагирует на движение курсора.">
+          <div class="product-stage" id="product-stage" role="group" tabindex="0" aria-label="3D-модель ZEST, Юдзу и лимон" aria-describedby="rotation-help">
             <img class="can-fallback" src="./assets/can-yuzu.png" alt="Жёлтая банка ZEST Юдзу и лимон" fetchpriority="high" width="1024" height="1536">
           </div>
           <div class="product-shadow" aria-hidden="true"></div>
-          <span class="scene-note">КРУТИ. ВЫБИРАЙ. ОСВЕЖАЙСЯ.</span>
+          <span class="scene-note" id="rotation-help">Потяни, чтобы покрутить <span class="sr-only">. Или используй стрелки влево и вправо. Home — исходный ракурс.</span></span>
           <div class="flavor-control">
             <div class="flavor-control-top"><h2 id="active-flavor" aria-live="polite">Юдзу & лимон</h2><span id="flavor-number">01 / 03</span></div>
             <div class="flavor-options" role="group" aria-label="Выбери вкус">
@@ -71,7 +72,7 @@
         <div class="mix-strip reveal"><p>Не можешь выбрать? Собери микс.</p><button class="button" data-open-mix>Собрать набор <span aria-hidden="true">↗</span></button></div>
       </section>
       <section class="story page-width" id="inside" aria-labelledby="story-heading">
-        <div class="story-image-wrap reveal"><img src="./assets/citrus-editorial.png" alt="Три цитрусовых вкуса ZEST, свежие лимоны и грейпфрут в солнечном свете" width="1536" height="1024" loading="lazy" class="story-image"></div>
+        <div class="story-image-wrap reveal"><img src="./assets/citrus-editorial.png" alt="Три цитрусовых вкуса ZEST, свежие лимоны и грейпфрут в солнечном свете" width="1536" height="1024" loading="lazy" decoding="async" class="story-image"></div>
         <div class="story-copy reveal" id="about"><span class="section-index">/02 — ВСЁ ПРОСТО</span><h2 id="story-heading">Хорошее<br>внутри.</h2><p>Мы придумали ZEST для моментов, когда хочется выдохнуть. Открыть холодную банку. Почувствовать лето — где бы ты ни был.</p><p>Настоящий цитрусовый сок, чистый вкус и пузырьки, которые приятно щекочут нос. Вот и весь секрет.</p><div class="ingredient-row"><span>01</span><span>Натуральный сок</span><span aria-hidden="true">↗</span></div><div class="ingredient-row"><span>02</span><span>Лёгкие пузырьки</span><span aria-hidden="true">↗</span></div></div>
       </section>
     </main>
@@ -81,6 +82,7 @@
     <dialog id="mix-dialog" aria-labelledby="mix-heading" aria-describedby="mix-description">
       <div class="dialog-head"><span class="section-index">ТВОЁ МАЛЕНЬКОЕ ЛЕТО</span><button class="circle-button" id="close-dialog" aria-label="Закрыть конструктор">×</button></div>
       <h2 id="mix-heading">Собери свой микс.</h2><p id="mix-description">Шесть банок. Любое сочетание. Какое настроение берём с собой?</p>
+      <div class="mix-shortcuts"><button id="balanced-mix" class="text-button">По два каждого вкуса <span aria-hidden="true">↗</span></button><button id="clear-mix" class="text-button text-button-muted">Очистить</button></div>
       <div class="mix-items" id="mix-items"></div>
       <div class="mix-progress" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
       <div class="mix-summary" aria-live="polite"><span id="mix-count">0 из 6 банок</span><strong id="mix-total">0 ₽</strong></div>
@@ -88,6 +90,7 @@
       <p class="demo-note">Это портфолио-концепт. Можно сохранить подборку; покупка и оплата недоступны.</p>
       <p id="save-status" class="save-status" role="status"></p>
     </dialog>
+    <aside class="mix-dock" id="mix-dock" aria-label="Твой набор" hidden><div class="dock-copy"><span class="dock-label">ТВОЙ МИКС</span><span><strong id="dock-count">1 / 6</strong><span class="dock-price" id="dock-price">190 ₽</span></span></div><div class="dock-dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div><button class="button" data-open-mix>Мой набор <span aria-hidden="true">↗</span></button></aside>
     <div class="toast" id="toast" role="status"></div>
 </body>
 </html>
