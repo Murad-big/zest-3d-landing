@@ -1,5 +1,6 @@
 import * as THREE from './vendor/three.module.js';
 import { flavors } from './data.js';
+import { createCitrus } from './citrus.js';
 
 function labelTexture(flavor, renderer) {
   const canvas = document.createElement('canvas');
@@ -104,6 +105,8 @@ export async function initScene(initial) {
   const fillLight = new THREE.DirectionalLight(0xffffff,1);fillLight.position.set(4,1,-3);scene.add(fillLight);
   const textures = flavors.map(flavor => labelTexture(flavor,renderer));
   const can = createCan(textures);scene.add(can.group);
+  let citrus = null;
+  const applyFlavor = index => { can.setFlavor(index); citrus?.setFlavor(index); };
   // Collection images are pre-rendered assets; startup only prepares the live hero.
   const state = initial.getState();
   can.setFlavor(state.selectedFlavor);
@@ -121,6 +124,11 @@ export async function initScene(initial) {
   let pointerX=0,pointerY=0,targetX=0,targetY=0,dragging=false,lastX=0;
   let dragRotation=0,targetRotation=0,spin=0,scrollProgress=0;
   let flavorTween=null,currentFlavor=state.selectedFlavor;
+  // Decorative assets arrive after the usable can; failure leaves the core scene intact.
+  createCitrus(renderer).then(asset => {
+    citrus = asset; citrus.setFlavor(currentFlavor); scene.add(citrus.group);
+    stage.classList.add('citrus-ready'); renderFrame();
+  }).catch(() => { /* Keep the product interactive when a decorative asset cannot load. */ });
   const shadow=document.querySelector('.product-shadow');
   function resize() {
     const {width,height}=stage.getBoundingClientRect();if(!width||!height)return;
@@ -135,6 +143,7 @@ export async function initScene(initial) {
     shadow.style.transform=`rotate(-6deg) scale(${1-float*.5})`;
     shadow.style.opacity=String(.8-float*1.7);
     bubbleGroup.children.forEach((bubble,index)=>{bubble.position.y=bubble.userData.baseY+Math.sin(time*.7+index)*.14;});
+    citrus?.update(time, pointerX, spin);
     renderer.render(scene,camera);
   }
   function tick(now) {
@@ -148,7 +157,7 @@ export async function initScene(initial) {
       flavorTween.elapsed+=delta;
       const progress=Math.min(flavorTween.elapsed/.8,1);
       spin=Math.sin(progress*Math.PI)*.72;
-      if(progress>=.48&&!flavorTween.swapped){can.setFlavor(flavorTween.index);currentFlavor=flavorTween.index;flavorTween.swapped=true;}
+      if(progress>=.48&&!flavorTween.swapped){applyFlavor(flavorTween.index);currentFlavor=flavorTween.index;flavorTween.swapped=true;}
       if(progress===1){flavorTween=null;spin=0;}
     }
     renderFrame();raf=requestAnimationFrame(tick);
@@ -158,12 +167,12 @@ export async function initScene(initial) {
   window.addEventListener('zest:flavor',event=>{
     const index=event.detail.index;
     targetRotation=0;
-    if(paused||!visible||document.hidden){can.setFlavor(index);currentFlavor=index;flavorTween=null;spin=0;dragRotation=0;renderFrame();}
+    if(paused||!visible||document.hidden){applyFlavor(index);currentFlavor=index;flavorTween=null;spin=0;dragRotation=0;renderFrame();}
     else if(index!==currentFlavor||flavorTween){flavorTween={index,elapsed:0,swapped:false};resume();}
   });
   window.addEventListener('zest:motion',event=>{
     paused=event.detail.paused;
-    if(paused){pauseFrame();if(flavorTween){can.setFlavor(flavorTween.index);currentFlavor=flavorTween.index;flavorTween=null;spin=0;}renderFrame();}
+    if(paused){pauseFrame();if(flavorTween){applyFlavor(flavorTween.index);currentFlavor=flavorTween.index;flavorTween=null;spin=0;}renderFrame();}
     else resume();
   });
   document.addEventListener('visibilitychange',()=>{if(document.hidden)pauseFrame();else resume();});

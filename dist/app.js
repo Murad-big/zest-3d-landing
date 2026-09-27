@@ -19,15 +19,37 @@ window.addEventListener('zest:scene', event => { sceneAvailable = event.detail.a
 
 function applyMotion() {
   document.body.classList.toggle('motion-paused', paused);
-  $('#motion-toggle').setAttribute('aria-pressed', String(paused));
-  $('#motion-toggle').setAttribute('aria-label', paused ? 'Включить анимацию' : 'Приостановить анимацию');
-  $('#motion-toggle > span').textContent = paused ? '▷' : 'Ⅱ';
-  $('.motion-label').textContent = paused ? 'Продолжить' : 'Пауза';
+  $$('[data-motion-toggle]').forEach(button => {
+    button.setAttribute('aria-pressed', String(paused));
+    const subject = button.dataset.motionScope === 'marquee' ? 'бегущую строку' : 'анимацию';
+    button.setAttribute('aria-label', `${paused ? 'Включить' : 'Приостановить'} ${subject}`);
+    button.querySelector('.motion-icon').textContent = paused ? '▷' : 'Ⅱ';
+    button.querySelector('.motion-label').textContent = paused ? 'Продолжить' : 'Пауза';
+  });
   window.dispatchEvent(new CustomEvent('zest:motion', { detail: { paused } }));
 }
-$('#motion-toggle').addEventListener('click', () => { paused = !paused; applyMotion(); });
+$$('[data-motion-toggle]').forEach(button => button.addEventListener('click', () => { paused = !paused; applyMotion(); }));
 mediaQuery.addEventListener('change', (event) => { paused = event.matches; applyMotion(); });
 applyMotion();
+
+$$('.product-visual').forEach((visual, index) => {
+  const number = document.createElement('span');
+  number.className = 'product-number'; number.setAttribute('aria-hidden', 'true');
+  number.textContent = String(index + 1).padStart(2, '0'); visual.prepend(number);
+  visual.addEventListener('pointermove', event => {
+    if (paused || mediaQuery.matches || event.pointerType !== 'mouse') return;
+    const rect = visual.getBoundingClientRect();
+    const x = (event.clientX - rect.left) / rect.width - .5;
+    visual.style.setProperty('--card-x', `${x * 12}px`);
+    visual.style.setProperty('--card-roll', `${x * 8}deg`);
+  });
+  visual.addEventListener('pointerleave', () => { visual.style.removeProperty('--card-x'); visual.style.removeProperty('--card-roll'); });
+});
+const marquee = $('.marquee');
+if ('IntersectionObserver' in window) {
+  const motionObserver = new IntersectionObserver(entries => marquee.classList.toggle('is-in-view', entries[0].isIntersecting));
+  motionObserver.observe(marquee);
+} else marquee.classList.add('is-in-view');
 
 $$('[data-flavor]').forEach(button => button.addEventListener('click', () => {
   selectedFlavor = Number(button.dataset.flavor);

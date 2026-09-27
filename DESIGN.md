@@ -41,3 +41,14 @@ The audit found ambiguous quantity-only add buttons, decorative arrows without a
 The mix dialog now combines a visual six-can tray with its quantity controls. On desktop, the tray and editor sit side by side; on mobile, a compact horizontal tray keeps the save button within the normal tall-phone viewport. Filling the sixth slot updates the dock without opening an unexpected modal. Automatic 3D rendering stops behind the dialog and resumes when it closes, respecting the user's motion preference.
 
 Pre-rendered WebP cans retain the live model's artwork and material appearance while avoiding render/encode work on startup. Every flavor has an accurate static fallback. Screenshot review confirmed the original hero composition and palette, improved catalog hierarchy, the mobile mix tray, and working question expansions.
+
+## Fourth art-direction brief
+
+Three fresh ImageGen section references guide the hero, catalog, and new moments section. The existing design remains the source of truth for product labels, descriptions, navigation, and the mix builder; incidental generated copy changes are excluded. Tokens stay `#e7f576`, `#fafbf5`, `#203c32`, and `#20251e`. Condensed 900-weight display headlines, Golos body copy, 48px desktop gutters, 14–16px media corners, thin orbit lines, and capsule actions connect every section.
+
+- Hero: preserve all existing visible copy, type, composition and controls; add two textured 3D citrus slices that float and change fruit with the flavor. Keep the left slice below the heading's baseline so text remains unobscured. Citrus is real geometry using an ImageGen texture atlas, not a static screenshot of the concept.
+- Catalog: preserve all three products and functional controls. Add subdued outlined flavor numbers, fine elliptical orbits, subtle pointer movement and clear separation between tasting notes. Existing code-native can artwork stays consistent with the live product, rather than adopting incidental new print from ImageGen.
+- Transition: forest-green full-width marquee with acid display type, a simple sunburst and an accessible pause control. It shares the hero's motion setting and stops outside the viewport.
+- Moments: after the existing story, add `/03 — ЛОВИ МОМЕНТ`, the two-line headline `У лета нет / расписания.`, the picnic photograph without a tint, a balanced-mix CTA, and three open ritual steps. Use the original concept's copy and a 2.1:1 photo on desktop; use a centered square crop and stacked steps on mobile.
+
+New production assets are separate from the UI concepts. The picnic image is a full standalone photograph with corrected existing flavor labels. The alpha citrus atlas contains lemon, grapefruit and lime face textures; code supplies the 3D rind, thickness, lighting and movement. Existing purchase boundaries and accessible native dialog behavior remain intact.

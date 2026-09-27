@@ -10,6 +10,7 @@
   <link rel="preload" href="./assets/fonts/golos-black.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="./assets/fonts/roboto-condensed-black.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./details.css">
   <script src="./app.js" type="module"></script>
 </head>
 <body>
@@ -43,7 +44,7 @@
               <button class="swatch selected" style="--swatch:#e5f568" data-flavor="0" aria-label="Юдзу и лимон" aria-pressed="true"></button>
               <button class="swatch" style="--swatch:#ff9689" data-flavor="1" aria-label="Розовый грейпфрут" aria-pressed="false"></button>
               <button class="swatch" style="--swatch:#a8cf9d" data-flavor="2" aria-label="Лайм и мята" aria-pressed="false"></button>
-              <button class="motion-toggle" id="motion-toggle" aria-label="Приостановить анимацию" aria-pressed="false"><span aria-hidden="true">Ⅱ</span><span class="motion-label">Пауза</span></button>
+              <button class="motion-toggle" id="motion-toggle" data-motion-toggle aria-label="Приостановить анимацию" aria-pressed="false"><span class="motion-icon" aria-hidden="true">Ⅱ</span><span class="motion-label">Пауза</span></button>
             </div>
           </div>
         </div>
@@ -72,9 +73,28 @@
         </div>
         <div class="mix-strip reveal"><div><h3>Первое знакомство?</h3><p>По две банки каждого вкуса. Все три характера в одном наборе.</p><span class="mix-offer">6 × 330 мл <span aria-hidden="true">/</span> 1 140 ₽</span></div><button class="button" data-open-mix data-mix-preset="balanced">Попробовать все три <span aria-hidden="true">↗</span></button></div>
       </section>
+      <div class="marquee" aria-label="Солнце в каждом глотке">
+        <div class="marquee-track" aria-hidden="true">
+          <span class="marquee-unit">Солнце в каждом глотке <svg viewBox="0 0 80 80"><g fill="none" stroke="currentColor" stroke-width="1.2"><path d="M40 2v20m0 36v20M2 40h20m36 0h20M13 13l14 14m26 26 14 14M13 67l14-14m26-26 14-14M25 5l8 19m14 32 8 19M5 25l19 8m32 14 19 8M5 55l19-8m32-14 19-8M25 75l8-19m14-32 8-19"/><circle cx="40" cy="40" r="10"/></g></svg></span>
+          <span class="marquee-unit">Солнце в каждом глотке <svg viewBox="0 0 80 80"><g fill="none" stroke="currentColor" stroke-width="1.2"><path d="M40 2v20m0 36v20M2 40h20m36 0h20M13 13l14 14m26 26 14 14M13 67l14-14m26-26 14-14M25 5l8 19m14 32 8 19M5 25l19 8m32 14 19 8M5 55l19-8m32-14 19-8M25 75l8-19m14-32 8-19"/><circle cx="40" cy="40" r="10"/></g></svg></span>
+        </div>
+        <button class="marquee-pause circle-button" data-motion-toggle data-motion-scope="marquee" aria-label="Приостановить бегущую строку" aria-pressed="false"><span class="motion-icon" aria-hidden="true">Ⅱ</span><span class="motion-label sr-only">Пауза</span></button>
+      </div>
       <section class="story page-width" id="inside" aria-labelledby="story-heading">
         <div class="story-image-wrap reveal"><img src="./assets/citrus-editorial.webp" alt="Три цитрусовых вкуса ZEST, свежие лимоны и грейпфрут в солнечном свете" width="1536" height="1024" loading="lazy" decoding="async" class="story-image"></div>
         <div class="story-copy reveal" id="about"><span class="section-index">/02 — ВСЁ ПРОСТО</span><h2 id="story-heading">Хорошее<br>внутри.</h2><p>Мы придумали ZEST для моментов, когда хочется выдохнуть. Открыть холодную банку. Почувствовать лето — где бы ты ни был.</p><p>Настоящий цитрусовый сок, чистый вкус и пузырьки, которые приятно щекочут нос. Вот и весь секрет.</p><div class="story-questions"><details class="ingredient-row"><summary><span class="question-number">01</span><span>Какой вкус выбрать?</span><span class="question-icon" aria-hidden="true">+</span></summary><div class="question-answer"><p>Любишь яркий цитрус — начни с юдзу. Приятную горчинку — с грейпфрута. Хочется свежести — выбирай лайм и мяту.</p><button class="text-button" data-open-mix data-mix-preset="balanced">А можно по два каждого <span aria-hidden="true">↗</span></button></div></details><details class="ingredient-row"><summary><span class="question-number">02</span><span>Как пить ZEST?</span><span class="question-icon" aria-hidden="true">+</span></summary><div class="question-answer"><p>Хорошо охлади банку. Налей в стакан со льдом или пей прямо из неё. Долька цитруса — по настроению. Встряхивать не нужно: пузырьки уже внутри.</p></div></details><details class="ingredient-row"><summary><span class="question-number">03</span><span>Можно собрать свой набор?</span><span class="question-icon" aria-hidden="true">+</span></summary><div class="question-answer"><p>Да — любые шесть банок за 1 140 ₽. Меняй количество каждого вкуса, а готовый микс сохрани в файл. Это портфолио-концепт: заказ и оплата не оформляются.</p><button class="text-button" data-open-mix>Собрать свой <span aria-hidden="true">↗</span></button></div></details></div></div>
+      </section>
+      <section class="moments page-width" id="moments" aria-labelledby="moments-heading">
+        <div class="moments-heading reveal">
+          <div><span class="section-index">/03 — ЛОВИ МОМЕНТ</span><h2 id="moments-heading">У лета нет<br>расписания.</h2></div>
+          <div class="moments-intro"><p>Парк после работы. Балкон на солнце. Разговоры, которые не хочется заканчивать.</p><button class="button" data-open-mix data-mix-preset="balanced">Собрать микс на компанию <span aria-hidden="true">↗</span></button></div>
+        </div>
+        <div class="moments-photo reveal"><img src="./assets/summer-moments.webp" alt="Три друга встречаются на солнечном пикнике с тремя вкусами ZEST" width="1817" height="866" loading="lazy" decoding="async"></div>
+        <ol class="moment-steps">
+          <li class="reveal"><h3><span>01 /</span> Охлади</h3><p>Пусть банка будет холодной,<br> а день — тёплым.</p></li>
+          <li class="reveal" style="--delay:80ms"><h3><span>02 /</span> Открой</h3><p>Тот самый щелчок.<br> И маленькая пауза для себя.</p></li>
+          <li class="reveal" style="--delay:160ms"><h3><span>03 /</span> Раздели момент</h3><p>Три вкуса. Шесть банок.<br> Для тебя и твоих людей.</p></li>
+        </ol>
       </section>
     </main>
     <footer class="footer">
