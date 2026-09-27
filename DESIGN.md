@@ -33,3 +33,11 @@ The six-can dialog is a functional extension of the concept's CTA. The project r
 The second pass preserves the composition while giving the can more saturated print, brushed metal, smaller condensation droplets, and clearer studio highlights. Pointer and drag movement use damping; flavor transitions rotate the can as its label changes. Touch gestures and keyboard controls make the product interaction available beyond a mouse. Automatic movement remains optional and stops offscreen.
 
 The collection and story now use more readable heading weights, larger controls, and a single-column collection on narrow screens. A compact floating summary keeps the selected mix within reach; local storage restores it after a refresh. The dialog adds a balanced preset and clear action, and remains animated independently of the 3D pause control. Desktop, full-page, and mobile renders were reviewed after these changes.
+
+## Product experience refinement
+
+The audit found ambiguous quantity-only add buttons, decorative arrows without an action, insufficient flavor comparison, and unnecessary catalog rendering at startup. The third pass separates selected quantities from labeled add/edit actions, introduces first-sip and aftertaste notes, turns the story rows into native expandable questions, and presents a clearly priced balanced starter mix.
+
+The mix dialog now combines a visual six-can tray with its quantity controls. On desktop, the tray and editor sit side by side; on mobile, a compact horizontal tray keeps the save button within the normal tall-phone viewport. Filling the sixth slot updates the dock without opening an unexpected modal. Automatic 3D rendering stops behind the dialog and resumes when it closes, respecting the user's motion preference.
+
+Pre-rendered WebP cans retain the live model's artwork and material appearance while avoiding render/encode work on startup. Every flavor has an accurate static fallback. Screenshot review confirmed the original hero composition and palette, improved catalog hierarchy, the mobile mix tray, and working question expansions.

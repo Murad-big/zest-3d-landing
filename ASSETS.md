@@ -4,7 +4,7 @@ Both original images were generated with the built-in OpenAI ImageGen tool, in o
 
 ## `dist/assets/can-yuzu.png`
 
-Purpose: transparent product fallback when WebGL is unavailable.
+Purpose: original transparent product concept; retained as a design source. The live fallback now uses the pre-rendered model images below.
 
 Prompt:
 
@@ -12,10 +12,19 @@ Prompt:
 
 ## `dist/assets/citrus-editorial.png`
 
-Purpose: brand-story editorial photograph.
+Purpose: original brand-story editorial photograph. The page serves a WebP copy with the same dimensions and composition.
 
 Prompt:
 
 > Use case: photorealistic-natural. Premium advertising photograph of three slim ZEST craft citrus soda cans and fresh cut citrus, on a hard sunlit light cream tabletop. Exactly three cans: electric chartreuse/yuzu, coral/pink grapefruit, and very pale green/lime. Real sliced lemons and grapefruit, tactile fruit flesh and believable condensation. Crisp, natural, tactile editorial photography. Wide landscape 3:2, overhead close-up. Directional midday sunlight and defined shadows. Each can displays a huge bold black “ZEST” wordmark. No other text, UI, or watermark. Realistic silver aluminum lids and bases, cohesive premium minimalist packaging.
 
 The live 3D product and collection renders are procedural Three.js geometry with code-native printed typography. They are not crops of website concept screenshots.
+
+## Optimized runtime assets
+
+- `product-yuzu.webp` — 600 × 720, 20,114 bytes.
+- `product-grapefruit.webp` — 600 × 720, 20,550 bytes.
+- `product-lime.webp` — 600 × 720, 17,634 bytes.
+- `citrus-editorial.webp` — 1536 × 1024, 329,744 bytes.
+
+The three product images were exported from the existing Three.js model and materials at the collection camera angle, then encoded as WebP at quality 0.88 with transparency preserved. The editorial WebP is a format optimization of the original generated photograph at the same quality. These local files serve the catalog, flavor-specific WebGL fallback, and visual mix tray. No external image API or rendering pass is required to display the catalog.
