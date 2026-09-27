@@ -10,6 +10,7 @@ An art-directed, animated Russian-language landing page for a fictional premium 
 - [x] Responsive landing page and flavor collection
 - [x] Interactive real-time 3D product scene
 - [x] Accessible mix builder, motion controls, and browser verification
+- [x] Second design pass: refined materials and typography, touch rotation, persistent mix dock
 
 ## Local preview
 
@@ -37,15 +38,16 @@ All application assets and fonts are local; the site requires no external runtim
 ## Features
 
 - A real Three.js aluminum can with a detailed lid, printed texture, instanced condensation, and studio reflections.
-- Mouse rotation, subtle floating motion, three synchronized flavor palettes, and a pause control.
+- Damped mouse and touch rotation, keyboard rotation and reset, subtle floating motion, three animated flavor palettes, and a pause control.
 - `prefers-reduced-motion`, offscreen rendering suspension, a WebGL fallback, and a capped device pixel ratio.
 - Collection product images rendered once from the same model, using only one WebGL context.
 - Native accessible dialog with a six-can mix builder, quantity limits, price calculation, and a UTF-8 text download.
+- A floating mix summary, one-click balanced selection, clear action, and validated local storage that restores the mix after reload.
 - Mobile navigation, scroll reveals, focus restoration, semantic sections, and keyboard controls.
 
 ## Verified
 
-Chromium browser checks passed at **390 × 844**, **768 × 1024**, and **1440 × 1000**. Checked live canvas animation, pause, flavor texture changes, quantity limits, totals, downloaded file content, Escape and focus return, mobile navigation, reduced motion, image loading, and horizontal overflow. No browser console errors or warnings remained.
+Chromium browser checks passed at widths **320, 390, 768, and 1440 px**, with desktop and mobile screenshot review. Checked canvas pause and keyboard rotation, flavor material changes, opening the dialog while motion is paused, quantity limits, totals, downloaded file content, balanced selection, persistence, malformed storage recovery, Escape and focus return, mobile navigation, reduced motion, image loading, and horizontal overflow. No browser console errors or warnings remained. The keyboard skip link was also checked separately after its final visual refinement.
 
 ## Files
 

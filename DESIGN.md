@@ -3,7 +3,7 @@
 Three coordinated ImageGen references establish the hero, collection, and story/footer. Their generated UI remains a reference only; all website text and controls are live HTML.
 
 - Hero: acid yellow `#e7f576`, black `#20251e`, open split composition, giant compact headline, tilted can, fine elliptical orbit, circular flavor swatches.
-- Typography: Roboto Condensed 900 for the narrow hero headline; Golos Text 900 for section headings and 400 for body. Hero scale up to 145px; section scale 82–104px with fluid mobile reductions. UI text 14–16px; body 16–18px.
+- Typography: Roboto Condensed 900 for expressive display headlines; Golos Text 700 for readable section and product headings and 400 for body. Hero scale up to 145px with fluid mobile reductions. UI text 14–16px; body 16–18px.
 - Containers: open full-width sections with 48px desktop and 20px mobile gutters. Collection uses three purposeful product panels; other sections remain unboxed.
 - Components: capsule CTAs, circular plus buttons, three color selectors, fine divider rows. One accessible native dialog is an intentional extension needed to make the build-a-mix action functional.
 - Hero copy: “Маленькая банка. Большое лето.” No eyebrow or promotional badge. Navigation: Вкусы / Что внутри / О нас / Попробовать.
@@ -27,3 +27,9 @@ Compared the three original concepts with desktop, full-page, and mobile browser
 6. Mobile: stacked the hero and collection, reduced heading size, added a compact menu, and increased space between the can and flavor controls.
 
 The six-can dialog is a functional extension of the concept's CTA. The project remains an explicit fictional brand demo and does not simulate a successful real order.
+
+## Second refinement
+
+The second pass preserves the composition while giving the can more saturated print, brushed metal, smaller condensation droplets, and clearer studio highlights. Pointer and drag movement use damping; flavor transitions rotate the can as its label changes. Touch gestures and keyboard controls make the product interaction available beyond a mouse. Automatic movement remains optional and stops offscreen.
+
+The collection and story now use more readable heading weights, larger controls, and a single-column collection on narrow screens. A compact floating summary keeps the selected mix within reach; local storage restores it after a refresh. The dialog adds a balanced preset and clear action, and remains animated independently of the 3D pause control. Desktop, full-page, and mobile renders were reviewed after these changes.
