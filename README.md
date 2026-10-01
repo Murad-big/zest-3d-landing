@@ -6,7 +6,6 @@
 
 ![Напитки ZEST](dist/assets/citrus-editorial.webp)
 
-[Опубликованная версия](https://zest-citrus-studio.richard-cabrer849537.chatgpt.site). На момент публикации доступ был ограничен владельцем; ссылка может потребовать авторизацию.
 
 ## Возможности
 
